@@ -24,3 +24,17 @@ Frontend (Streamlit)
 Dashboard with last 10 weeks of data.
 Line chart of historical & predicted values.
 Live re-training on latest data.
+
+## 📊 Model Performance (Gas-only, Random Forest)
+
+Using ~710 days (~101 weeks) of Texas Regular Gasoline prices:
+
+- **MAE (Mean Absolute Error):** ~0.078 $/gal  
+- **RMSE (Root Mean Squared Error):** ~0.088 $/gal  
+- **R² (Explained Variance):** -2.61 (baseline, limited by only 3 lag features)  
+- **Prediction Horizon:** Next week’s gasoline price  
+- **Predicted price example:** $2.756/gal (for week of 2025-09-22)  
+
+⚡ *Interpretation:*  
+The model predicts within ~8 cents per gallon on average.  
+While R² is negative (showing that weekly gas prices are highly volatile), this sets a **baseline** and motivates adding **longer lag features + sentiment signals from news** to improve performance.  
