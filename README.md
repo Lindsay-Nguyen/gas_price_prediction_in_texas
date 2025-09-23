@@ -1,4 +1,8 @@
-# gas_price_prediction_in_texas
+# ⛽ gas_price_prediction_in_texas
+
+My app is live on Streamlit Cloud 👉 [Texas Gas Price Prediction](https://texasgaspriceprediction.streamlit.app)
+
+This project predicts next week’s **regular gasoline price in Texas** using live data from the [EIA API](https://www.eia.gov/) and machine learning models.  
 ⛽ Texas Gas Price Prediction
 
 This project predicts next week’s regular gasoline price in Texas using data from the U.S. Energy Information Administration (EIA) and machine learning models. The pipeline includes live data collection, feature engineering (lags), model training, evaluation, and a simple frontend for visualization.
