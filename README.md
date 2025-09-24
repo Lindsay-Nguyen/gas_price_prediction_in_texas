@@ -19,7 +19,7 @@ Evaluation metrics: MAE, RMSE, R².
 Next-week price prediction.
 
 Frontend (Streamlit)
-Dashboard with last 10 weeks of data.
+Dashboard with last 101 weeks of data.
 Line chart of historical & predicted values.
 Live re-training on latest data.
 
