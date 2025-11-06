@@ -18,7 +18,6 @@ API Key Hidden via environment variables (.env / Streamlit Secrets)
 🧠 Project Structure
 texas_gas_forecast/
 
-│
 ├── README.md
 
 └── ML/
