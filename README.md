@@ -1,38 +1,66 @@
-# ⛽ gas_price_prediction_in_texas
+🛢️ Texas Gas Price Forecasting App
+This project predicts Texas Regular Gasoline prices using real-world data from the U.S. Energy Information Administration (EIA).
 
-This project predicts next week’s **regular gasoline price in Texas** using live data from the [EIA API](https://www.eia.gov/) and machine learning models.  
-⛽ Texas Gas Price Prediction
+⚙️ Features
 
-This project predicts next week’s regular gasoline price in Texas using data from the U.S. Energy Information Administration (EIA) and machine learning models. The pipeline includes live data collection, feature engineering (lags), model training, evaluation, and a simple frontend for visualization.
-📌 Features
-Live EIA API data
-Automatically fetches Texas weekly regular gasoline prices from EIA
+Live Data Fetching from the EIA API
 
-Feature engineering
-Lag features (lag1–lag8) to capture past price history.
+Data Cleaning & Transformation using pandas
 
-Target column = next week’s price.
+Lag Feature Engineering for time-series modeling
 
-Machine learning
-Baseline model: Random Forest Regressor.
-Evaluation metrics: MAE, RMSE, R².
-Next-week price prediction.
+Machine Learning Forecast using scikit-learn (Random Forest Regressor)
 
-Frontend (Streamlit)
-Dashboard with last 101 weeks of data.
-Line chart of historical & predicted values.
-Live re-training on latest data.
+Interactive Visualization built with Streamlit
 
-## 📊 Model Performance (Gas-only, Random Forest)
+API Key Hidden via environment variables (.env / Streamlit Secrets)
 
-Using ~710 days (~101 weeks) of Texas Regular Gasoline prices:
+🧠 Project Structure
+texas_gas_forecast/
+│
+├── README.md
+└── ML/
+    ├── .env
+    ├── .gitignore
+    ├── requirements.txt
+    ├── api_eia.py
+    └── gas_app.py
 
-- **MAE (Mean Absolute Error):** ~0.078 $/gal  
-- **RMSE (Root Mean Squared Error):** ~0.088 $/gal  
-- **R² (Explained Variance):** -2.61 (baseline, limited by only 3 lag features)  
-- **Prediction Horizon:** Next week’s gasoline price  
-- **Predicted price example:** $2.756/gal (for week of 2025-09-22)  
+🚀 How to Run Locally
+1️⃣ Clone the repository
+git clone https://github.com/Lindsay-Nguyen/gas_price_prediction_in_texas.git
+cd gas_price_prediction_in_texas
 
-⚡ *Interpretation:*  
-The model predicts within ~8 cents per gallon on average.  
-While R² is negative (showing that weekly gas prices are highly volatile), this sets a **baseline** and motivates adding **longer lag features + sentiment signals from news** to improve performance.  
+2️⃣ Create a virtual environment
+python -m venv venv
+source venv/bin/activate     # Mac/Linux
+venv\Scripts\activate        # Windows
+
+3️⃣ Install dependencies
+pip install -r requirements.txt
+
+4️⃣ Add your EIA API key
+Create a file named .env in the root folder:
+EIA_API_KEY=your_api_key_here
+(If running on Streamlit Cloud, add this key under Settings → Secrets instead.)
+
+🧩 Example Usage
+Run locally:
+streamlit run gas_app.py
+
+Or run API data fetch directly:
+python api_eia.py
+
+🧮 Model Overview
+
+Algorithm: Random Forest Regressor
+Features: Previous week prices (lag1–lag5)
+Target: Next week’s price
+Metrics: MAE, RMSE, R² Score
+
+✅ Data fetching from REST APIs
+✅ Data cleaning and feature engineering
+✅ Model building and evaluation
+✅ Secure environment variable handling
+✅ Streamlit dashboard development
+✅ Git and version control workflow
