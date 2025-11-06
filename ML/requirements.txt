@@ -3,3 +3,5 @@ numpy
 requests
 scikit-learn
 streamlit
+python-dotenv
+
