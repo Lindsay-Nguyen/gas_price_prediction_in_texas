@@ -1,16 +1,24 @@
 from datetime import datetime, timedelta
 import requests
 import pandas as pd
+import os
+from dotenv import load_dotenv
 
-API_KEY = "OQNC38D4yqerK2pIBvOWfgcDe78jXkinnlaAbqFx"
+# --- Load environment variables ---
+load_dotenv()
 
+# Get your EIA API key safely from .env file
+API_KEY = os.getenv("EIA_API_KEY")
+
+if not API_KEY:
+    raise ValueError(" Missing EIA_API_KEY. Please set it in your .env file.")
 
 def get_texas_gas_with_lags(days_back=2000):
     """
     Fetch TX Regular Gasoline weekly prices from EIA.
     Returns two DataFrames:
-      - df_raw: clean weekly series (date, price), includes the last week
-      - df_lagged: same with lag1–lag8 + target, safe for training (last week dropped)
+      - df_raw: clean weekly series (date, price)
+      - df_lagged: same with lag1–lag8 + target (safe for ML)
     """
     start = (datetime.today() - timedelta(days=days_back)).strftime("%Y-%m-%d")
 
@@ -33,12 +41,12 @@ def get_texas_gas_with_lags(days_back=2000):
     df = pd.DataFrame(data["response"]["data"])
 
     if df.empty:
-        raise ValueError("❌ No data returned from EIA API. Try increasing days_back.")
+        raise ValueError("No data returned from EIA API. Try increasing days_back.")
 
     # --- filter only Regular Gasoline ---
     df = df[df["product-name"].str.contains("Regular", case=False)]
     if df.empty:
-        raise ValueError("❌ No 'Regular Gasoline' found. Check available products above.")
+        raise ValueError(" No 'Regular Gasoline' found. Check available products above.")
 
     # Keep only date + price
     df = df[["period", "value"]].rename(columns={"period": "date", "value": "price"})
@@ -49,12 +57,12 @@ def get_texas_gas_with_lags(days_back=2000):
     df = df.groupby("date", as_index=False).agg({"price": "mean"}).sort_values("date")
 
     # ---------------------
-    # df_raw: clean weekly data (keep last week)
+    # df_raw: clean weekly data
     # ---------------------
     df_raw = df.reset_index(drop=True)
 
     # ---------------------
-    # df_lagged: training data with lag features, last week dropped
+    # df_lagged: add lag features (1–8 weeks)
     # ---------------------
     df_lagged = df.copy()
     for lag in range(1, 9):
