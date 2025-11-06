@@ -11,19 +11,22 @@ st.set_page_config(
 )
 st.title("⛽ Texas Gas Price Prediction Dashboard")
 
-df_raw, df = get_texas_gas_with_lags(120) 
+# ---------------------
+# Load and prepare data
+# ---------------------
+df_raw, df = get_texas_gas_with_lags(120)
 
-df_raw = df_raw.sort_values("date").reset_index(drop=True)  
-df = df.sort_values("date").reset_index(drop=True)           
+df_raw = df_raw.sort_values("date").reset_index(drop=True)
+df = df.sort_values("date").reset_index(drop=True)
 
 if df_raw.empty or df.empty:
-    st.error("No data from EIA. Try again later.")
+    st.error("❌ No data from EIA. Try again later.")
     st.stop()
 
 # ---------------------
 # Training dataset
 # ---------------------
-X = df[["lag1", "lag2", "lag3", "lag4", "lag5"]]  
+X = df[["lag1", "lag2", "lag3", "lag4", "lag5"]]
 y = df["price"]
 
 if len(X) < 2:
@@ -49,33 +52,30 @@ model.fit(X_train, y_train)
 
 df["prediction"] = model.predict(X)
 
-
+# ---------------------
+# Merge with raw data for display
+# ---------------------
 df_hist = df_raw.merge(df[["date", "prediction"]], on="date", how="left")
 
 # If the last raw week has no prediction, compute it manually
 if pd.isna(df_hist.loc[df_hist.index[-1], "prediction"]):
-    latest_actual_price = df_raw["price"].iloc[-1]
-    df_hist.loc[df_hist.index[-1], "prediction"] = float(model.predict([[latest_actual_price]])[0])
+    latest_values = df.iloc[-1][["lag1", "lag2", "lag3", "lag4", "lag5"]].values.reshape(1, -1)
+    df_hist.loc[df_hist.index[-1], "prediction"] = float(model.predict(latest_values)[0])
 
 # ---------------------
-# Clean display (remove rows with missing predictions)
+# Clean display (remove missing)
 # ---------------------
 df_display = df_hist.dropna(subset=["prediction"]).reset_index(drop=True)
 
 # ---------------------
 # Next-week prediction
 # ---------------------
-last_raw_date = df_raw["date"].max()                 # last actual week (e.g. 09/15)
+last_raw_date = df_raw["date"].max()
 next_week_date = last_raw_date + pd.Timedelta(weeks=1)
 next_week_display = next_week_date.strftime("%Y/%m/%d")
 
-latest_actual_price = df_raw["price"].iloc[-1]       # last actual price
 latest_values = df.iloc[-1][["lag1", "lag2", "lag3", "lag4", "lag5"]].values.reshape(1, -1)
 next_week_prediction = float(model.predict(latest_values)[0])
-
-
-# ---------------------
-# Layout
 # ---------------------
 col1, col2 = st.columns([1.2, 2])
 
@@ -94,6 +94,3 @@ with col2:
 
 st.markdown("---")
 st.caption("Data source: U.S. Energy Information Administration (EIA)")
-
-
-
