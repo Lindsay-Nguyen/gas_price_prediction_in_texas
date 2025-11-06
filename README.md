@@ -17,8 +17,10 @@ API Key Hidden via environment variables (.env / Streamlit Secrets)
 
 🧠 Project Structure
 texas_gas_forecast/
+
 │
 ├── README.md
+
 └── ML/
     ├── .env
     ├── .gitignore
@@ -27,6 +29,7 @@ texas_gas_forecast/
     └── gas_app.py
 
 🚀 How to Run Locally
+
 1️⃣ Clone the repository
 git clone https://github.com/Lindsay-Nguyen/gas_price_prediction_in_texas.git
 cd gas_price_prediction_in_texas
