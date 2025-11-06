@@ -60,9 +60,3 @@ Features: Previous week prices (lag1–lag5)
 Target: Next week’s price
 Metrics: MAE, RMSE, R² Score
 
-✅ Data fetching from REST APIs
-✅ Data cleaning and feature engineering
-✅ Model building and evaluation
-✅ Secure environment variable handling
-✅ Streamlit dashboard development
-✅ Git and version control workflow
