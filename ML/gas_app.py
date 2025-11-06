@@ -17,7 +17,7 @@ df_raw = df_raw.sort_values("date").reset_index(drop=True)
 df = df.sort_values("date").reset_index(drop=True)           
 
 if df_raw.empty or df.empty:
-    st.error("❌ No data from EIA. Try again later.")
+    st.error("No data from EIA. Try again later.")
     st.stop()
 
 # ---------------------
@@ -27,7 +27,7 @@ X = df[["lag1"]]
 y = df["price"]
 
 if len(X) < 2:
-    st.error("❌ Not enough rows for training. Increase history in get_texas_gas_with_lags().")
+    st.error("Not enough rows for training. Increase history in get_texas_gas_with_lags().")
     st.stop()
 
 # ---------------------
@@ -38,7 +38,7 @@ X_train, X_test = X.iloc[:split], X.iloc[split:]
 y_train, y_test = y.iloc[:split], y.iloc[split:]
 
 if X_train.empty or y_train.empty:
-    st.error("❌ Training data is empty. Increase history window in get_texas_gas_with_lags().")
+    st.error("Training data is empty. Increase history window in get_texas_gas_with_lags().")
     st.stop()
 
 # ---------------------
@@ -92,3 +92,4 @@ with col2:
 
 st.markdown("---")
 st.caption("Data source: U.S. Energy Information Administration (EIA)")
+
