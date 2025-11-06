@@ -70,7 +70,9 @@ next_week_date = last_raw_date + pd.Timedelta(weeks=1)
 next_week_display = next_week_date.strftime("%Y/%m/%d")
 
 latest_actual_price = df_raw["price"].iloc[-1]       # last actual price
-next_week_prediction = float(model.predict([[latest_actual_price]])[0])
+latest_values = df.iloc[-1][["lag1", "lag2", "lag3", "lag4", "lag5"]].values.reshape(1, -1)
+next_week_prediction = float(model.predict(latest_values)[0])
+
 
 # ---------------------
 # Layout
@@ -92,5 +94,6 @@ with col2:
 
 st.markdown("---")
 st.caption("Data source: U.S. Energy Information Administration (EIA)")
+
 
 
