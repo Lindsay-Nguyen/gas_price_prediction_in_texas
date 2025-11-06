@@ -8,7 +8,7 @@ from api_eia import get_texas_gas_with_lags
 df = get_texas_gas_with_lags(days_back=710)   # ~710 days (101 weeks)
 
 # --- features: only past prices ---
-X = df[["lag1", "lag2", "lag3"]]
+X = df[["lag1", "lag2", "lag3", "lag4", "lag5"]]
 y = df["target"]
 
 # --- train/test split ---
@@ -31,7 +31,7 @@ mae = mean_absolute_error(y_test, y_pred)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 r2 = r2_score(y_test, y_pred) if len(y_test) > 1 else float("nan")
 
-print("📊 Model (gas-only) Evaluation")
+print("Model (gas-only) Evaluation")
 print(f"MAE : {mae:.3f} $/gal")
 print(f"RMSE: {rmse:.3f} $/gal")
 print(f"R²  : {r2:.3f}" if np.isfinite(r2) else "R² : NA")
@@ -39,4 +39,5 @@ print(f"R²  : {r2:.3f}" if np.isfinite(r2) else "R² : NA")
 # --- predict next week ---
 latest_row = X.iloc[-1:]
 next_price = model.predict(latest_row)[0]
-print(f"\n🔮 Predicted next week's TX Regular price: ${next_price:.3f}")
+print(f"\nPredicted next week's TX Regular price: ${next_price:.3f}")
+
