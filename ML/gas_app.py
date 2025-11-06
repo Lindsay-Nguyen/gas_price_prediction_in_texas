@@ -23,7 +23,7 @@ if df_raw.empty or df.empty:
 # ---------------------
 # Training dataset
 # ---------------------
-X = df[["lag1"]]  
+X = df[["lag1", "lag2", "lag3", "lag4", "lag5"]]  
 y = df["price"]
 
 if len(X) < 2:
@@ -92,4 +92,5 @@ with col2:
 
 st.markdown("---")
 st.caption("Data source: U.S. Energy Information Administration (EIA)")
+
 
